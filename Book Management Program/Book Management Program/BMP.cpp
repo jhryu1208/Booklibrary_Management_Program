@@ -20,6 +20,7 @@ struct _tagBook
 	char	iRent[10];							// 대여상태
 	int		iPrice;							// 책가격
 	int		iPage;							// 쪽수
+
 };
 
 enum MENU
@@ -37,8 +38,11 @@ int main()
 	_tagBook tBookArr[BOOK_MAX] = { };
 	int iBookCount = 0;
 	int iRent=0;
+	int iNumber;
+	int iChoose;
 	char strcan[9];
 	char strcant[9];
+	char strName[NAME_SIZE] = {};
 
 	strcpy_s(strcan, "가능");
 	strcpy_s(strcant, "불가능");
@@ -78,7 +82,7 @@ int main()
 			system("cls");
 			
 			cout << "======================= BOOK 추가 =======================" << endl;
-			cout << "책 이름 : ";
+			cout << "책 제목 : ";
 			cin >> tBookArr[iBookCount].strBookname;
 			
 			cin.ignore(1024, '\n');
@@ -121,11 +125,71 @@ int main()
 
 			cin.ignore(1024, '\n');
 
+			++iBookCount;
+
+			cout << "도서가 추가되었습니다." << endl;
+
 			break;
 		
 		case MENU_RENT:
 			system("cls");
+			
+			cout << "======================= BOOK RENT =======================" << endl;
+			for (int i = 0; i < iBookCount; ++i)
+			{
+				cout << i+1 << ". ";
+				cout << tBookArr[i].strBookname << endl;
+			}
+			
+			cin.ignore(1024, '\n');
 
+			cout << " 대여하실 책의 제목을 입력해주세요 : ";
+			cin.getline(strName, NAME_SIZE);
+
+			for (int i = 0; i < iBookCount; ++i)
+			{
+				if (strcmp(tBookArr[i].strBookname, strName) == 0)
+				{
+					cout << "책 제목 : " << tBookArr[i].strBookname << endl;
+					cout << "출판사 : " << tBookArr[i].strPublisher << endl;
+					cout << "저자 : " << tBookArr[i].strWriter << endl;
+					cout << "등록일 : " << tBookArr[i].strDay << endl;
+					cout << "쪽수 : " << tBookArr[i].iPage << endl;
+					cout << "가격 : " << tBookArr[i].iPrice << endl;
+
+					if (iRent == 1)
+						cout << "이 도서는 대여 가능한 상태입니다." << endl;
+					else
+						cout << "이 도서는 대여 불가능한 상태입니다." << endl;
+
+					cout << endl;
+
+					if (iRent == 1)
+					{
+						cout << "=========================================================" << endl;
+						cout << "도서를 대여하시겠습니까?" << endl;
+						cout << "확인 = 1" << "\t" << "취소=2" << endl;
+						cin >> iChoose;
+						if (iChoose==1)
+						{
+							iRent = 0;
+							cout << "도서를 대여하였습니다" << endl;
+							break;
+						}
+						else
+						{
+							cout << "대여를 취소하였습니다." << endl;
+							continue;
+						}
+					}
+					else
+					{
+						cout << "대여 할 수 없는 도서입니다." << endl;
+					}
+				}
+				else
+					cout << "잘못입력하였습니다" << endl;
+			}
 			break;
 		
 		case MENU_RETURN:
@@ -135,12 +199,33 @@ int main()
 		
 		case MENU_CATEGORY:
 			system("cls");
+			
+			cout << "======================= BOOK CATEGORY =======================" << endl;
+			
+			for (int i = 0; i < iBookCount; ++i)
+			{
+				cout << "책 제목 : " << tBookArr[i].strBookname << endl;
+				cout << "출판사 : " << tBookArr[i].strPublisher << endl;
+				cout << "저자 : " << tBookArr[i].strWriter << endl;
+				cout << "등록일 : " << tBookArr[i].strDay << endl;
+				cout << "쪽수 : " << tBookArr[i].iPage << endl;
+				cout << "가격 : " << tBookArr[i].iPrice << endl;
+				
+				if (iRent == 1)
+					cout << "이 도서는 대여 가능한 상태입니다." << endl;
+				else
+					cout << "이 도서는 대여 불가능한 상태입니다." << endl;
+				
+				cout << endl;
+			}
 
 			break;
 		
 		default:
+			cout << "메뉴를 잘못 선택하셨습니다." << endl;
 			break;
 		}
+		system("pause");
 	}
 
 
